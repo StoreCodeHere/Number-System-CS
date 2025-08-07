@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <head>
+    <title>Number Converter</title>
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+  </head>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            },
+            secondary: {
+              50: '#fdf2f8',
+              100: '#fce7f3',
+              200: '#fbcfe8',
+              300: '#f9a8d4',
+              400: '#f472b6',
+              500: '#ec4899',
+              600: '#db2777',
+              700: '#be185d',
+              800: '#9d174d',
+              900: '#831843',
+            }
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'fade-in': 'fadeIn 0.3s ease-in forwards',
+            'slide-up': 'slideUp 0.4s ease-out forwards'
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: 0 },
+              '100%': { opacity: 1 }
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(20px)', opacity: 0 },
+              '100%': { transform: 'translateY(0)', opacity: 1 }
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #f0f2f5, #e6e9ef);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      transition: background 0.5s ease;
+      color: #1e293b;
+    }
+    
+    .dark body {
+      background: linear-gradient(135deg, #0c0f1d, #1a1c2f);
+      color: #cbd5e1;
+    }
+    
+    .card {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 95vw;
+    }
+    
+    .dark .card {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+    
+    .input-field {
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      font-size: 1rem;
+      padding: 0.8rem;
+      color: #1e293b;
+    }
+    
+    .dark .input-field {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+    }
+    
+    .input-field:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.3);
+    }
+    
+    .input-error {
+      border-color: #f87171 !important;
+      background-color: rgba(254, 226, 226, 0.4);
+    }
+    
+    .dark .input-error {
+      background-color: rgba(127, 29, 29, 0.2);
+    }
+    
+    .result-box {
+      min-height: 3.5rem;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      padding: 0.8rem;
+      color: #1e293b;
+    }
+    
+    .dark .result-box {
+      background: rgba(15, 23, 42, 0.4);
+      color: #cbd5e1;
+    }
+    
+    .convert-btn {
+      background: linear-gradient(135deg, #0ea5e9, #ec4899);
+      transition: all 0.3s ease, transform 0.2s;
+      box-shadow: 0 4px 6px rgba(14, 165, 233, 0.2);
+      padding: 0.9rem;
+      font-size: 1rem;
+      color: white;
+    }
+    
+    .convert-btn:hover {
+      background: linear-gradient(135deg, #0284c7, #db2777);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(14, 165, 233, 0.3);
+    }
+    
+    .convert-btn:active {
+      transform: translateY(0);
+    }
+    
+    .theme-toggle {
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      width: 2.5rem;
+      height: 2.5rem;
+      backdrop-filter: blur(4px);
+    }
+    
+    .dark .theme-toggle {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .theme-toggle:hover {
+      background: rgba(255, 255, 255, 0.9);
+    }
+    
+    .dark .theme-toggle:hover {
+      background: rgba(15, 23, 42, 0.7);
+    }
+    
+    .number-badge {
+      background: linear-gradient(135deg, #0ea5e9, #ec4899);
+    }
+    
+    .animate-result {
+      animation: fadeIn 0.5s ease-in, pulse-slow 2s ease-in-out 0.5s;
+    }
+    
+    .system-icon {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      background: rgba(14, 165, 233, 0.15);
+      color: #0ea5e9;
+      font-weight: 600;
+      font-size: 0.75rem;
+    }
+    
+    .dark .system-icon {
+      background: rgba(14, 165, 233, 0.2);
+    }
+    
+    .type-indicator {
+      position: absolute;
+      top: -10px;
+      right: 10px;
+      background: linear-gradient(135deg, #0ea5e9, #ec4899);
+      color: white;
+      font-size: 0.7rem;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-weight: 600;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+    }
+    
+    /* Fix for dropdown visibility */
+    select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background-color: rgba(255, 255, 255, 0.8) !important;
+    }
+    
+    .dark select {
+      background-color: rgba(15, 23, 42, 0.7) !important;
+    }
+    
+    .dropdown-wrapper {
+      position: relative;
+    }
+    
+    .dropdown-wrapper::after {
+      content: "▼";
+      font-size: 0.6rem;
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #64748b;
+      pointer-events: none;
+    }
+    
+    .dark .dropdown-wrapper::after {
+      color: #94a3b8;
+    }
+    
+    .dropdown-fix-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 12px;
+      z-index: -1;
+    }
+    
+    .dark .dropdown-fix-layer {
+      background: rgba(15, 23, 42, 0.7);
+    }
+    
+    /* Mobile optimizations */
+    @media (max-width: 640px) {
+      body {
+        padding: 0.5rem;
+        align-items: flex-start;
+        padding-top: 1.5rem;
+      }
+      
+      .card {
+        border-radius: 16px;
+        max-width: 100%;
+      }
+      
+      .p-6 {
+        padding: 1.25rem;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      .type-indicator {
+        font-size: 0.6rem;
+        padding: 2px 8px;
+        right: 15px;
+      }
+      
+      .input-field, .result-box {
+        padding: 0.75rem;
+        font-size: 0.95rem;
+      }
+      
+      .convert-btn {
+        padding: 0.85rem;
+        font-size: 0.95rem;
+      }
+      
+      .theme-toggle {
+        width: 2.25rem;
+        height: 2.25rem;
+      }
+      
+      .system-icon {
+        width: 22px;
+        height: 22px;
+        font-size: 0.7rem;
+      }
+      
+      .dropdown-wrapper::after {
+        right: 12px;
+      }
+    }
+    
+    @media (max-width: 400px) {
+      .p-6 {
+        padding: 1rem;
+      }
+      
+      h1 {
+        font-size: 1.35rem;
+      }
+      
+      .input-field, .result-box {
+        padding: 0.7rem;
+        font-size: 0.9rem;
+      }
+      
+      .convert-btn {
+        padding: 0.8rem;
+      }
+      
+      .type-indicator {
+        right: 10px;
+        font-size: 0.55rem;
+      }
+    }
+    
+    /* Keyboard avoidance for iOS */
+    @media (max-height: 600px) and (orientation: portrait) {
+      body {
+        align-items: flex-start;
+        padding-top: 1rem;
+      }
+    }
+  </style>
+</head>
+<body class="dark:bg-gray-900">
+  <div class="card relative overflow-visible">
+    <div class="type-indicator">NUMBER CONVERTER</div>
+    
+    <div class="p-6 space-y-5">
+      <div class="flex justify-between items-center">
+        <h1 class="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">
+          Number System Converter
+        </h1>
+        <button id="themeToggle" class="theme-toggle rounded-full flex items-center justify-center transition-all">
+          <svg id="sunIcon" class="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+          </svg>
+          <svg id="moonIcon" class="w-4 h-4 sm:w-5 sm:h-5 text-indigo-400 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="space-y-4">
+        <div class="relative">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Conversion Type</label>
+          <div class="dropdown-wrapper">
+            <div class="dropdown-fix-layer"></div>
+            <select id="conversionType" class="input-field w-full rounded-xl focus:outline-none pl-10">
+              <option value="dec2bin">Decimal to Binary</option>
+              <option value="bin2dec">Binary to Decimal</option>
+              <option value="dec2oct">Decimal to Octal</option>
+              <option value="oct2dec">Octal to Decimal</option>
+              <option value="oct2bin">Octal to Binary</option>
+              <option value="bin2oct">Binary to Octal</option>
+              <option value="dec2hex">Decimal to Hexadecimal</option>
+              <option value="hex2dec">Hexadecimal to Decimal</option>
+              <option value="bin2hex">Binary to Hexadecimal</option>
+              <option value="hex2bin">Hexadecimal to Binary</option>
+            </select>
+            <div class="system-icon absolute left-3 top-1/2 transform -translate-y-1/2">
+              <span>#</span>
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <div class="flex justify-between items-center mb-2">
+            <label id="inputLabel" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Decimal Number</label>
+            <span class="text-xs text-gray-500 dark:text-gray-400">Press Enter to convert</span>
+          </div>
+          <input 
+            type="text" 
+            id="inputValue" 
+            class="input-field w-full rounded-xl focus:outline-none placeholder-gray-500 dark:placeholder-gray-400" 
+            placeholder="Enter value"
+          >
+          <p id="errorMsg" class="text-red-500 dark:text-red-400 text-sm mt-2 h-4 transition-all duration-300"></p>
+        </div>
+        
+        <button id="convertBtn" class="convert-btn w-full rounded-xl font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 transition-all">
+          Convert Number
+        </button>
+        
+        <div class="pt-2">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Result</label>
+          <div id="result" class="result-box w-full rounded-xl font-mono break-all flex items-center"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="px-4 sm:px-6 py-3 bg-gradient-to-r from-cyan-100/50 to-purple-100/50 dark:from-cyan-900/20 dark:to-purple-900/20 border-t border-gray-200 dark:border-gray-700/50">
+      <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+        <div>Number Systems</div>
+        <div>DEC • BIN • OCT • HEX</div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    // DOM Elements
+    const conversionType = document.getElementById('conversionType');
+    const inputLabel = document.getElementById('inputLabel');
+    const inputValue = document.getElementById('inputValue');
+    const errorMsg = document.getElementById('errorMsg');
+    const convertBtn = document.getElementById('convertBtn');
+    const result = document.getElementById('result');
+    const themeToggle = document.getElementById('themeToggle');
+    const sunIcon = document.getElementById('sunIcon');
+    const moonIcon = document.getElementById('moonIcon');
+    const systemIcon = document.querySelector('.system-icon span');
+
+    // Theme toggle functionality
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+      sunIcon.classList.toggle('hidden', savedTheme === 'dark');
+      moonIcon.classList.toggle('hidden', savedTheme !== 'dark');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      sunIcon.classList.toggle('hidden', isDark);
+      moonIcon.classList.toggle('hidden', !isDark);
+    });
+
+    // Update input label based on selected conversion
+    function updateInputLabel() {
+      const labels = {
+        'dec2bin': 'Decimal Number',
+        'bin2dec': 'Binary Number',
+        'dec2oct': 'Decimal Number',
+        'oct2dec': 'Octal Number',
+        'oct2bin': 'Octal Number',
+        'bin2oct': 'Binary Number',
+        'dec2hex': 'Decimal Number',
+        'hex2dec': 'Hexadecimal Number',
+        'bin2hex': 'Binary Number',
+        'hex2bin': 'Hexadecimal Number'
+      };
+      
+      const icons = {
+        'dec2bin': 'DEC',
+        'bin2dec': 'BIN',
+        'dec2oct': 'DEC',
+        'oct2dec': 'OCT',
+        'oct2bin': 'OCT',
+        'bin2oct': 'BIN',
+        'dec2hex': 'DEC',
+        'hex2dec': 'HEX',
+        'bin2hex': 'BIN',
+        'hex2bin': 'HEX'
+      };
+      
+      inputLabel.textContent = labels[conversionType.value];
+      systemIcon.textContent = icons[conversionType.value];
+      inputValue.placeholder = `Enter ${labels[conversionType.value].toLowerCase()}`;
+      inputValue.value = '';
+      result.textContent = '';
+      errorMsg.textContent = '';
+      inputValue.classList.remove('input-error');
+    }
+
+    conversionType.addEventListener('change', updateInputLabel);
+    
+    // Initial label setup
+    updateInputLabel();
+
+    // Conversion functions
+    const converters = {
+      dec2bin: dec => parseInt(dec, 10).toString(2),
+      bin2dec: bin => parseInt(bin, 2).toString(10),
+      dec2oct: dec => parseInt(dec, 10).toString(8),
+      oct2dec: oct => parseInt(oct, 8).toString(10),
+      oct2bin: oct => parseInt(oct, 8).toString(2),
+      bin2oct: bin => parseInt(bin, 2).toString(8),
+      dec2hex: dec => parseInt(dec, 10).toString(16).toUpperCase(),
+      hex2dec: hex => parseInt(hex, 16).toString(10),
+      bin2hex: bin => parseInt(bin, 2).toString(16).toUpperCase(),
+      hex2bin: hex => parseInt(hex, 16).toString(2)
+    };
+
+    // Validation functions
+    const validators = {
+      dec: val => /^-?\d+$/.test(val),
+      bin: val => /^[01]+$/.test(val),
+      oct: val => /^[0-7]+$/.test(val),
+      hex: val => /^[0-9A-Fa-f]+$/.test(val)
+    };
+
+    // Map conversion types to validation
+    const validationMap = {
+      'dec2bin': 'dec',
+      'bin2dec': 'bin',
+      'dec2oct': 'dec',
+      'oct2dec': 'oct',
+      'oct2bin': 'oct',
+      'bin2oct': 'bin',
+      'dec2hex': 'dec',
+      'hex2dec': 'hex',
+      'bin2hex': 'bin',
+      'hex2bin': 'hex'
+    };
+
+    // Perform conversion
+    function performConversion() {
+      const type = conversionType.value;
+      const value = inputValue.value.trim();
+      const validatorType = validationMap[type];
+      
+      // Clear previous state
+      result.textContent = '';
+      result.classList.remove('animate-result');
+      errorMsg.textContent = '';
+      inputValue.classList.remove('input-error');
+
+      // Validate input
+      if (!value) {
+        errorMsg.textContent = 'Please enter a value';
+        inputValue.classList.add('input-error');
+        return;
+      }
+
+      if (!validators[validatorType](value)) {
+        errorMsg.textContent = `Invalid ${validatorType === 'bin' ? 'binary' : validatorType} number`;
+        inputValue.classList.add('input-error');
+        return;
+      }
+
+      try {
+        const converted = converters[type](value);
+        result.textContent = converted;
+        result.classList.add('animate-result');
+      } catch (e) {
+        errorMsg.textContent = 'Conversion error: Invalid input format';
+        inputValue.classList.add('input-error');
+      }
+    }
+
+    convertBtn.addEventListener('click', performConversion);
+
+    // Allow Enter key to trigger conversion
+    inputValue.addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') {
+        performConversion();
+      }
+    });
+
+    // Initialize theme
+    initTheme();
+    
+    // Focus input on page load for mobile usability
+    setTimeout(() => {
+      inputValue.focus({preventScroll: true});
+    }, 300);
+  </script>
+</body>
+</html>

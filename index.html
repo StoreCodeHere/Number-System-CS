@@ -200,20 +200,22 @@
     // Helpers
     const BASE_LABEL = { 2: 'Binary', 8: 'Octal', 10: 'Decimal', 16: 'Hexadecimal' };
     const BASE_HINT = {
-      2: 'Allowed: 0–1',
-      8: 'Allowed: 0–7',
-      10: 'Allowed: 0–9',
-      16: 'Allowed: 0–9, A–F'
+      2: 'Allowed: 0–1 and “.”',
+      8: 'Allowed: 0–7 and “.”',
+      10: 'Allowed: 0–9 and “.”',
+      16: 'Allowed: 0–9, A–F and “.”'
     };
     const PREFIX = { 2: /^0b/i, 8: /^0o/i, 16: /^0x/i };
 
+    // Max fractional digits to emit in output (truncate if non-terminating)
+    const MAX_FRAC_DIGITS = 32;
+
     function normalizeInput(str, base) {
-      // Remove spaces/underscores, trim, and strip base-specific prefixes
+      // Remove spaces/underscores, keep a single dot if present, strip base-specific prefixes
       let s = String(str).trim().replace(/[\s_]/g, '');
       const neg = s.startsWith('-');
       if (neg) s = s.slice(1);
 
-      // If input includes a prefix matching the "from" base, strip it.
       if (base === 2) s = s.replace(PREFIX[2], '');
       if (base === 8) s = s.replace(PREFIX[8], '');
       if (base === 16) s = s.replace(PREFIX[16], '');
@@ -222,15 +224,22 @@
     }
 
     function validateDigits(str, base) {
-      // Empty is invalid
       if (!str) return false;
+      // Allow at most one dot
+      const dotCount = (str.match(/\./g) || []).length;
+      if (dotCount > 1) return false;
+
+      // Remove dot for validation; ensure at least one digit remains
+      const core = str.replace('.', '');
+      if (!core) return false;
+
       const re = {
         2: /^[01]+$/,
         8: /^[0-7]+$/,
         10: /^[0-9]+$/,
         16: /^[0-9a-fA-F]+$/
       }[base];
-      return re.test(str);
+      return re.test(core);
     }
 
     function charToVal(ch) {
@@ -242,6 +251,11 @@
       return NaN;
     }
 
+    function digitToChar(d) {
+      return d < 10 ? String.fromCharCode(48 + d) : String.fromCharCode(65 + (d - 10)); // 0-9, A-F
+    }
+
+    // Integer parse (kept for reuse)
     function baseStringToBigInt(s, base, sign) {
       const B = BigInt(base);
       let val = 0n;
@@ -253,11 +267,64 @@
       return sign < 0 ? -val : val;
     }
 
-    function bigIntToBaseString(n, base) {
-      if (n === 0n) return '0';
-      const out = n.toString(base);
-      // Uppercase hex
-      return base === 16 ? out.toUpperCase() : out;
+    // Parse to exact rational: returns { num: BigInt, den: BigInt }
+    function baseStringToRational(s, base, sign) {
+      const [intPart = '', fracPart = ''] = s.split('.');
+      const intVal = baseStringToBigInt(intPart || '0', base, +1); // sign applied at the end
+
+      if (!fracPart) {
+        const num = sign < 0 ? -intVal : intVal;
+        return { num, den: 1n };
+      }
+
+      const B = BigInt(base);
+      let fracVal = 0n;
+      for (let i = 0; i < fracPart.length; i++) {
+        const d = charToVal(fracPart[i]);
+        if (isNaN(d) || d >= base) throw new Error('Invalid digit');
+        fracVal = fracVal * B + BigInt(d);
+      }
+      const den = B ** BigInt(fracPart.length);
+      let num = intVal * den + fracVal;
+      if (sign < 0) num = -num;
+      return { num, den };
+    }
+
+    // Exact rational → base string, truncating after MAX_FRAC_DIGITS if repeating
+    function rationalToBaseString(num, den, base, maxFrac = MAX_FRAC_DIGITS) {
+      if (num === 0n) return '0';
+
+      const negative = num < 0n;
+      let n = num < 0n ? -num : num;
+      const d = den;
+
+      // Integer part
+      const q = n / d;
+      let intStr = q.toString(base);
+      if (base === 16) intStr = intStr.toUpperCase();
+
+      // Fractional part
+      let r = n % d;
+      if (r === 0n) return (negative ? '-' : '') + intStr;
+
+      let frac = '';
+      for (let i = 0; i < maxFrac && r !== 0n; i++) {
+        r *= BigInt(base);
+        const digit = Number(r / d);
+        r = r % d;
+        frac += digitToChar(digit);
+      }
+
+      // If hex, ensure uppercase fractional digits too
+      if (base === 16) frac = frac.toUpperCase();
+
+      // Trim trailing zeros if fraction terminated early
+      if (r === 0n) {
+        frac = frac.replace(/0+$/, '');
+        if (frac.length === 0) return (negative ? '-' : '') + intStr;
+      }
+
+      return (negative ? '-' : '') + intStr + '.' + frac;
     }
 
     function convertBetween(input, fromBase, toBase) {
@@ -266,8 +333,8 @@
         return { error: `Invalid ${BASE_LABEL[fromBase]} input. ${BASE_HINT[fromBase]}.` };
       }
       try {
-        const bi = baseStringToBigInt(digits, fromBase, sign);
-        const result = bigIntToBaseString(bi, toBase);
+        const { num, den } = baseStringToRational(digits, fromBase, sign);
+        const result = rationalToBaseString(num, den, toBase, MAX_FRAC_DIGITS);
         return { result };
       } catch (e) {
         return { error: 'Conversion error. Check your input.' };
@@ -617,5 +684,6 @@
     mountCards();
   </script>
 </body>
+
 
 </html>

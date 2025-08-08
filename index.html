@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Number System Converter — CS Bases</title>
 
   <!-- Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
 
   <!-- Tailwind CSS (CDN) -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -48,69 +50,76 @@
     :root {
       color-scheme: light dark;
     }
+
     .glass {
-      background: linear-gradient(
-        135deg,
-        rgba(93, 0, 255, 0.65),
-        rgba(225, 6, 6, 0.3)
-      );
+      background: linear-gradient(135deg,
+          rgba(93, 0, 255, 0.65),
+          rgba(225, 6, 6, 0.3));
       backdrop-filter: blur(10px);
     }
+
     .glass-dark {
-  background: linear-gradient(
-    135deg,
-    rgba(124, 58, 237, 0.2),
-    rgba(59, 130, 246, 0.1)
-  );
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.05);
-}
+      background: linear-gradient(135deg,
+          rgba(124, 58, 237, 0.2),
+          rgba(59, 130, 246, 0.1));
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
 
 
     .ring-gradient {
       box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,0.15),
-        0 0 0 1px rgba(255,255,255,0.05);
+        inset 0 0 0 1px rgba(255, 255, 255, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
     }
+
     .focus-ring:focus {
       outline: none;
       box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.25);
     }
+
     .code-box {
       font-variant-ligatures: none;
       letter-spacing: 0.2px;
     }
+
     select {
-  background: rgba(255, 255, 255, 0.08); /* match the frosted look */
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #ffffff;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 10px;
-  padding: 10px 14px;
-  font-size: 1rem;
-  font-family: 'Poppins', sans-serif;
-  appearance: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.15);
-  z-index: 1;
-}
+      background: rgba(255, 255, 255, 0.08);
+      /* match the frosted look */
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+      appearance: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 1px 8px rgba(0, 0, 0, 0.15);
+      z-index: 1;
+    }
 
-select option {
-  background-color: rgba(30, 30, 30, 0.9); /* consistent with dark dropdown panel */
-  color: #fff;
-}
-
-    
+    select option {
+      background-color: rgba(30, 30, 30, 0.9);
+      /* consistent with dark dropdown panel */
+      color: #fff;
+    }
   </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-indigo-50 via-fuchsia-50 to-violet-50 dark:from-inky dark:via-glaze dark:to-black text-slate-800 dark:text-slate-100 font-sans">
+
+<body
+  class="min-h-screen bg-gradient-to-br from-indigo-50 via-fuchsia-50 to-violet-50 dark:from-inky dark:via-glaze dark:to-black text-slate-800 dark:text-slate-100 font-sans">
 
   <!-- Header -->
   <header class="relative">
     <div class="absolute inset-0 pointer-events-none">
-      <div class="w-[60vw] h-[60vw] md:w-[35vw] md:h-[35vw] rounded-full blur-3xl opacity-20 dark:opacity-30 bg-gradient-to-tr from-indigo-400 via-fuchsia-400 to-purple-400 absolute -top-24 -left-24"></div>
-      <div class="w-[50vw] h-[50vw] md:w-[30vw] md:h-[30vw] rounded-full blur-3xl opacity-15 dark:opacity-25 bg-gradient-to-tr from-cyan-300 via-sky-300 to-indigo-300 absolute -bottom-20 -right-10"></div>
+      <div
+        class="w-[60vw] h-[60vw] md:w-[35vw] md:h-[35vw] rounded-full blur-3xl opacity-20 dark:opacity-30 bg-gradient-to-tr from-indigo-400 via-fuchsia-400 to-purple-400 absolute -top-24 -left-24">
+      </div>
+      <div
+        class="w-[50vw] h-[50vw] md:w-[30vw] md:h-[30vw] rounded-full blur-3xl opacity-15 dark:opacity-25 bg-gradient-to-tr from-cyan-300 via-sky-300 to-indigo-300 absolute -bottom-20 -right-10">
+      </div>
     </div>
 
     <div class="max-w-6xl mx-auto px-5 pt-10 pb-6 relative">
@@ -118,12 +127,14 @@ select option {
         <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight">
           Number System Converter
         </h1>
-        <button id="themeToggle" class="glass dark:glass-dark ring-gradient px-3 py-2 rounded-lg text-sm font-semibold hover:shadow-glow transition focus-ring">
+        <button id="themeToggle"
+          class="glass dark:glass-dark ring-gradient px-3 py-2 rounded-lg text-sm font-semibold hover:shadow-glow transition focus-ring">
           Toggle theme
         </button>
       </div>
       <p class="mt-3 text-slate-600 dark:text-slate-300 max-w-2xl">
-        Convert between binary, octal, decimal, and hexadecimal with precision. Supports negatives, common prefixes, and instant validation.
+        Convert between binary, octal, decimal, and hexadecimal with precision. Supports negatives, common prefixes, and
+        instant validation.
       </p>
     </div>
   </header>
@@ -132,10 +143,18 @@ select option {
     <!-- Quick examples / chips -->
     <section class="mb-8">
       <div class="flex flex-wrap gap-2">
-        <span class="glass dark:glass-dark ring-gradient px-3 py-1 rounded-full text-xs text-slate-700 dark:text-slate-200">Try: 255 (Dec)</span>
-        <span class="glass dark:glass-dark ring-gradient px-3 py-1 rounded-full text-xs text-slate-700 dark:text-slate-200">Try: 0b101101 (Bin)</span>
-        <span class="glass dark:glass-dark ring-gradient px-3 py-1 rounded-full text-xs text-slate-700 dark:text-slate-200">Try: 0o765 (Oct)</span>
-        <span class="glass dark:glass-dark ring-gradient px-3 py-1 rounded-full text-xs text-slate-700 dark:text-slate-200">Try: 0x7B (Hex)</span>
+        <span
+          class="glass dark:glass-dark ring-gradient px-3 py-1 rounded-full text-xs text-slate-700 dark:text-slate-200">Try:
+          255 (Dec)</span>
+        <span
+          class="glass dark:glass-dark ring-gradient px-3 py-1 rounded-full text-xs text-slate-700 dark:text-slate-200">Try:
+          0b101101 (Bin)</span>
+        <span
+          class="glass dark:glass-dark ring-gradient px-3 py-1 rounded-full text-xs text-slate-700 dark:text-slate-200">Try:
+          0o765 (Oct)</span>
+        <span
+          class="glass dark:glass-dark ring-gradient px-3 py-1 rounded-full text-xs text-slate-700 dark:text-slate-200">Try:
+          0x7B (Hex)</span>
       </div>
     </section>
 
@@ -151,42 +170,42 @@ select option {
   </main>
 
   <script>
-    // Theme toggle
-    (function initTheme() {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const saved = localStorage.getItem('theme');
-      const toDark = saved ? saved === 'dark' : prefersDark;
-      document.documentElement.classList.toggle('dark', toDark);
-      const toggle = document.getElementById('themeToggle');
-      toggle?.addEventListener('click', () => {
-        const isDark = document.documentElement.classList.toggle('dark');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      });
-    })();
+      // Theme toggle
+      (function initTheme() {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const saved = localStorage.getItem('theme');
+        const toDark = saved ? saved === 'dark' : prefersDark;
+        document.documentElement.classList.toggle('dark', toDark);
+        const toggle = document.getElementById('themeToggle');
+        toggle?.addEventListener('click', () => {
+          const isDark = document.documentElement.classList.toggle('dark');
+          localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+      })();
 
     // Conversion descriptors
     const cards = [
-      { id:'dec-bin',    title:'Decimal → Binary',      fromBase:10, toBase:2,  placeholder:'e.g., 255' },
-      { id:'bin-dec',    title:'Binary → Decimal',      fromBase:2,  toBase:10, placeholder:'e.g., 0b101101 or 101101' },
-      { id:'dec-oct',    title:'Decimal → Octal',       fromBase:10, toBase:8,  placeholder:'e.g., 512' },
-      { id:'oct-dec',    title:'Octal → Decimal',       fromBase:8,  toBase:10, placeholder:'e.g., 0o765 or 765' },
-      { id:'oct-bin',    title:'Octal → Binary',        fromBase:8,  toBase:2,  placeholder:'e.g., 74' },
-      { id:'bin-oct',    title:'Binary → Octal',        fromBase:2,  toBase:8,  placeholder:'e.g., 110110' },
-      { id:'dec-hex',    title:'Decimal → Hex',         fromBase:10, toBase:16, placeholder:'e.g., 123456789' },
-      { id:'hex-dec',    title:'Hex → Decimal',         fromBase:16, toBase:10, placeholder:'e.g., 0x7B or 7B' },
-      { id:'bin-hex',    title:'Binary → Hex',          fromBase:2,  toBase:16, placeholder:'e.g., 11111001' },
-      { id:'hex-bin',    title:'Hex → Binary',          fromBase:16, toBase:2,  placeholder:'e.g., F00D' },
+      { id: 'dec-bin', title: 'Decimal → Binary', fromBase: 10, toBase: 2, placeholder: 'e.g., 255' },
+      { id: 'bin-dec', title: 'Binary → Decimal', fromBase: 2, toBase: 10, placeholder: 'e.g., 0b101101 or 101101' },
+      { id: 'dec-oct', title: 'Decimal → Octal', fromBase: 10, toBase: 8, placeholder: 'e.g., 512' },
+      { id: 'oct-dec', title: 'Octal → Decimal', fromBase: 8, toBase: 10, placeholder: 'e.g., 0o765 or 765' },
+      { id: 'oct-bin', title: 'Octal → Binary', fromBase: 8, toBase: 2, placeholder: 'e.g., 74' },
+      { id: 'bin-oct', title: 'Binary → Octal', fromBase: 2, toBase: 8, placeholder: 'e.g., 110110' },
+      { id: 'dec-hex', title: 'Decimal → Hex', fromBase: 10, toBase: 16, placeholder: 'e.g., 123456789' },
+      { id: 'hex-dec', title: 'Hex → Decimal', fromBase: 16, toBase: 10, placeholder: 'e.g., 0x7B or 7B' },
+      { id: 'bin-hex', title: 'Binary → Hex', fromBase: 2, toBase: 16, placeholder: 'e.g., 11111001' },
+      { id: 'hex-bin', title: 'Hex → Binary', fromBase: 16, toBase: 2, placeholder: 'e.g., F00D' },
     ];
 
     // Helpers
-    const BASE_LABEL = {2:'Binary',8:'Octal',10:'Decimal',16:'Hexadecimal'};
+    const BASE_LABEL = { 2: 'Binary', 8: 'Octal', 10: 'Decimal', 16: 'Hexadecimal' };
     const BASE_HINT = {
-      2:  'Allowed: 0–1',
-      8:  'Allowed: 0–7',
+      2: 'Allowed: 0–1',
+      8: 'Allowed: 0–7',
       10: 'Allowed: 0–9',
       16: 'Allowed: 0–9, A–F'
     };
-    const PREFIX = {2: /^0b/i, 8: /^0o/i, 16:/^0x/i};
+    const PREFIX = { 2: /^0b/i, 8: /^0o/i, 16: /^0x/i };
 
     function normalizeInput(str, base) {
       // Remove spaces/underscores, trim, and strip base-specific prefixes
@@ -195,8 +214,8 @@ select option {
       if (neg) s = s.slice(1);
 
       // If input includes a prefix matching the "from" base, strip it.
-      if (base === 2)  s = s.replace(PREFIX[2], '');
-      if (base === 8)  s = s.replace(PREFIX[8], '');
+      if (base === 2) s = s.replace(PREFIX[2], '');
+      if (base === 8) s = s.replace(PREFIX[8], '');
       if (base === 16) s = s.replace(PREFIX[16], '');
 
       return { sign: neg ? -1 : 1, digits: s };
@@ -206,8 +225,8 @@ select option {
       // Empty is invalid
       if (!str) return false;
       const re = {
-        2:  /^[01]+$/,
-        8:  /^[0-7]+$/,
+        2: /^[01]+$/,
+        8: /^[0-7]+$/,
         10: /^[0-9]+$/,
         16: /^[0-9a-fA-F]+$/
       }[base];
@@ -295,7 +314,7 @@ select option {
               class="w-full rounded-xl px-4 py-3 bg-white/70 dark:bg-white/10 border border-white/40 dark:border-white/10 focus-ring code-box"
             />
             <div class="text-[11px] text-slate-500 dark:text-slate-400">
-              ${BASE_HINT[cfg.fromBase]}. Prefixes accepted: ${cfg.fromBase===2?'0b':'—'} ${cfg.fromBase===8?'0o':'—'} ${cfg.fromBase===16?'0x':'—'}.
+              ${BASE_HINT[cfg.fromBase]}. Prefixes accepted: ${cfg.fromBase === 2 ? '0b' : '—'} ${cfg.fromBase === 8 ? '0o' : '—'} ${cfg.fromBase === 16 ? '0x' : '—'}.
             </div>
 
             <div class="flex items-center gap-2 pt-2">
@@ -323,9 +342,9 @@ select option {
         </div>
       `;
     }
-    
-function universalCardTemplate() {
-  return `
+
+    function universalCardTemplate() {
+      return `
     <div class="relative overflow-hidden rounded-2xl p-5 glass dark:glass-dark ring-gradient hover:shadow-glow transition">
       <div class="absolute inset-0 pointer-events-none opacity-30">
         <div class="absolute -top-16 -right-16 w-48 h-48 rounded-full blur-3xl bg-gradient-to-tr from-indigo-400/50 via-fuchsia-400/50 to-purple-400/50"></div>
@@ -402,200 +421,201 @@ function universalCardTemplate() {
       </div>
     </div>
   `;
-}
-
-  function mountCards() {
-  const grid = document.getElementById('cardsGrid');
-  grid.innerHTML = universalCardTemplate() + cards.map(cardTemplate).join('');
-
-  // ——— Universal card wiring ———
-  const $ufrom = document.getElementById('uni-from');
-  const $uto   = document.getElementById('uni-to');
-  const $uin   = document.getElementById('uni-input');
-  const $uout  = document.getElementById('uni-output');
-  const $uerr  = document.getElementById('uni-error');
-  const $uhint = document.getElementById('uni-hint');
-  const $fromLbl = document.getElementById('uni-from-label');
-  const $toLbl   = document.getElementById('uni-to-label');
-  const $btnConvert = document.getElementById('uni-convert');
-  const $btnClear   = document.getElementById('uni-clear');
-  const $btnCopy    = document.getElementById('uni-copy');
-  const $btnSwap    = document.getElementById('uni-swap');
-
-  const updateLabelsAndHint = () => {
-    const fb = parseInt($ufrom.value, 10);
-    const tb = parseInt($uto.value, 10);
-    $fromLbl.textContent = BASE_LABEL[fb];
-    $toLbl.textContent = BASE_LABEL[tb];
-
-    const p2 = fb === 2 ? '0b' : '—';
-    const p8 = fb === 8 ? '0o' : '—';
-    const p16 = fb === 16 ? '0x' : '—';
-    $uhint.textContent = `${BASE_HINT[fb]}. Prefixes accepted: ${p2} ${p8} ${p16}.`;
-  };
-
-  const renderUni = () => {
-    const fb = parseInt($ufrom.value, 10);
-    const tb = parseInt($uto.value, 10);
-    const raw = $uin.value;
-
-    if (!raw.trim()) {
-      $uout.textContent = '—';
-      $uerr.classList.add('hidden');
-      return;
     }
-    const { result, error } = convertBetween(raw, fb, tb);
-    if (error) {
-      $uout.textContent = '—';
-      $uerr.textContent = error;
-      $uerr.classList.remove('hidden');
-    } else {
-      $uout.textContent = result;
-      $uerr.classList.add('hidden');
+
+    function mountCards() {
+      const grid = document.getElementById('cardsGrid');
+      grid.innerHTML = universalCardTemplate() + cards.map(cardTemplate).join('');
+
+      // ——— Universal card wiring ———
+      const $ufrom = document.getElementById('uni-from');
+      const $uto = document.getElementById('uni-to');
+      const $uin = document.getElementById('uni-input');
+      const $uout = document.getElementById('uni-output');
+      const $uerr = document.getElementById('uni-error');
+      const $uhint = document.getElementById('uni-hint');
+      const $fromLbl = document.getElementById('uni-from-label');
+      const $toLbl = document.getElementById('uni-to-label');
+      const $btnConvert = document.getElementById('uni-convert');
+      const $btnClear = document.getElementById('uni-clear');
+      const $btnCopy = document.getElementById('uni-copy');
+      const $btnSwap = document.getElementById('uni-swap');
+
+      const updateLabelsAndHint = () => {
+        const fb = parseInt($ufrom.value, 10);
+        const tb = parseInt($uto.value, 10);
+        $fromLbl.textContent = BASE_LABEL[fb];
+        $toLbl.textContent = BASE_LABEL[tb];
+
+        const p2 = fb === 2 ? '0b' : '—';
+        const p8 = fb === 8 ? '0o' : '—';
+        const p16 = fb === 16 ? '0x' : '—';
+        $uhint.textContent = `${BASE_HINT[fb]}. Prefixes accepted: ${p2} ${p8} ${p16}.`;
+      };
+
+      const renderUni = () => {
+        const fb = parseInt($ufrom.value, 10);
+        const tb = parseInt($uto.value, 10);
+        const raw = $uin.value;
+
+        if (!raw.trim()) {
+          $uout.textContent = '—';
+          $uerr.classList.add('hidden');
+          return;
+        }
+        const { result, error } = convertBetween(raw, fb, tb);
+        if (error) {
+          $uout.textContent = '—';
+          $uerr.textContent = error;
+          $uerr.classList.remove('hidden');
+        } else {
+          $uout.textContent = result;
+          $uerr.classList.add('hidden');
+        }
+      };
+
+      // Events
+      [$ufrom, $uto].forEach(el => el.addEventListener('change', () => {
+        updateLabelsAndHint();
+        // Soft re-validate and maybe re-render
+        const { digits } = normalizeInput($uin.value, parseInt($ufrom.value, 10));
+        if (!digits) {
+          $uerr.classList.add('hidden');
+          $uout.textContent = '—';
+        } else if (!validateDigits(digits, parseInt($ufrom.value, 10))) {
+          $uerr.textContent = `Invalid ${BASE_LABEL[parseInt($ufrom.value, 10)]} input. ${BASE_HINT[parseInt($ufrom.value, 10)]}.`;
+          $uerr.classList.remove('hidden');
+        } else {
+          $uerr.classList.add('hidden');
+          renderUni();
+        }
+      }));
+
+      $btnSwap.addEventListener('click', () => {
+        const tmp = $ufrom.value;
+        $ufrom.value = $uto.value;
+        $uto.value = tmp;
+        updateLabelsAndHint();
+        renderUni();
+      });
+
+      $uin.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          renderUni();
+        }
+      });
+
+      $uin.addEventListener('input', () => {
+        const fb = parseInt($ufrom.value, 10);
+        const { digits } = normalizeInput($uin.value, fb);
+        if (!digits) {
+          $uerr.classList.add('hidden');
+          $uout.textContent = '—';
+          return;
+        }
+        if (!validateDigits(digits, fb)) {
+          $uerr.textContent = `Invalid ${BASE_LABEL[fb]} input. ${BASE_HINT[fb]}.`;
+          $uerr.classList.remove('hidden');
+        } else {
+          $uerr.classList.add('hidden');
+        }
+      });
+
+      $btnConvert.addEventListener('click', renderUni);
+
+      $btnClear.addEventListener('click', () => {
+        $uin.value = '';
+        $uout.textContent = '—';
+        $uerr.classList.add('hidden');
+        $uin.focus();
+      });
+
+      $btnCopy.addEventListener('click', async () => {
+        const text = $uout.textContent.trim();
+        if (!text || text === '—') return;
+        await copyToClipboard(text);
+        const original = $btnCopy.textContent;
+        $btnCopy.textContent = 'Copied!';
+        setTimeout(() => ($btnCopy.textContent = original), 900);
+      });
+
+      updateLabelsAndHint();
+
+      // ——— Specific cards wiring ———
+      cards.forEach(cfg => {
+        const $in = document.getElementById(`${cfg.id}-input`);
+        const $out = document.getElementById(`${cfg.id}-output`);
+        const $err = document.getElementById(`${cfg.id}-error`);
+        const $btnConvert = document.getElementById(`${cfg.id}-convert`);
+        const $btnClear = document.getElementById(`${cfg.id}-clear`);
+        const $btnCopy = document.getElementById(`${cfg.id}-copy`);
+
+        const render = () => {
+          const raw = $in.value;
+          if (!raw.trim()) {
+            $out.textContent = '—';
+            $err.classList.add('hidden');
+            return;
+          }
+          const { result, error } = convertBetween(raw, cfg.fromBase, cfg.toBase);
+          if (error) {
+            $out.textContent = '—';
+            $err.textContent = error;
+            $err.classList.remove('hidden');
+          } else {
+            $out.textContent = result;
+            $err.classList.add('hidden');
+          }
+        };
+
+        $btnConvert.addEventListener('click', render);
+
+        $in.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            render();
+          }
+        });
+
+        $in.addEventListener('input', () => {
+          const raw = $in.value;
+          const { digits } = normalizeInput(raw, cfg.fromBase);
+          if (!digits) {
+            $err.classList.add('hidden');
+            $out.textContent = '—';
+            return;
+          }
+          if (!validateDigits(digits, cfg.fromBase)) {
+            $err.textContent = `Invalid ${BASE_LABEL[cfg.fromBase]} input. ${BASE_HINT[cfg.fromBase]}.`;
+            $err.classList.remove('hidden');
+          } else {
+            $err.classList.add('hidden');
+          }
+        });
+
+        $btnClear.addEventListener('click', () => {
+          $in.value = '';
+          $out.textContent = '—';
+          $err.classList.add('hidden');
+          $in.focus();
+        });
+
+        $btnCopy.addEventListener('click', async () => {
+          const text = $out.textContent.trim();
+          if (!text || text === '—') return;
+          await copyToClipboard(text);
+          const original = $btnCopy.textContent;
+          $btnCopy.textContent = 'Copied!';
+          setTimeout(() => ($btnCopy.textContent = original), 900);
+        });
+      });
     }
-  };
-
-  // Events
-  [$ufrom, $uto].forEach(el => el.addEventListener('change', () => {
-    updateLabelsAndHint();
-    // Soft re-validate and maybe re-render
-    const { digits } = normalizeInput($uin.value, parseInt($ufrom.value,10));
-    if (!digits) {
-      $uerr.classList.add('hidden');
-      $uout.textContent = '—';
-    } else if (!validateDigits(digits, parseInt($ufrom.value,10))) {
-      $uerr.textContent = `Invalid ${BASE_LABEL[parseInt($ufrom.value,10)]} input. ${BASE_HINT[parseInt($ufrom.value,10)]}.`;
-      $uerr.classList.remove('hidden');
-    } else {
-      $uerr.classList.add('hidden');
-      renderUni();
-    }
-  }));
-
-  $btnSwap.addEventListener('click', () => {
-    const tmp = $ufrom.value;
-    $ufrom.value = $uto.value;
-    $uto.value = tmp;
-    updateLabelsAndHint();
-    renderUni();
-  });
-
-  $uin.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      renderUni();
-    }
-  });
-
-  $uin.addEventListener('input', () => {
-    const fb = parseInt($ufrom.value, 10);
-    const { digits } = normalizeInput($uin.value, fb);
-    if (!digits) {
-      $uerr.classList.add('hidden');
-      $uout.textContent = '—';
-      return;
-    }
-    if (!validateDigits(digits, fb)) {
-      $uerr.textContent = `Invalid ${BASE_LABEL[fb]} input. ${BASE_HINT[fb]}.`;
-      $uerr.classList.remove('hidden');
-    } else {
-      $uerr.classList.add('hidden');
-    }
-  });
-
-  $btnConvert.addEventListener('click', renderUni);
-
-  $btnClear.addEventListener('click', () => {
-    $uin.value = '';
-    $uout.textContent = '—';
-    $uerr.classList.add('hidden');
-    $uin.focus();
-  });
-
-  $btnCopy.addEventListener('click', async () => {
-    const text = $uout.textContent.trim();
-    if (!text || text === '—') return;
-    await copyToClipboard(text);
-    const original = $btnCopy.textContent;
-    $btnCopy.textContent = 'Copied!';
-    setTimeout(() => ($btnCopy.textContent = original), 900);
-  });
-
-  updateLabelsAndHint();
-
-  // ——— Specific cards wiring ———
-  cards.forEach(cfg => {
-    const $in  = document.getElementById(`${cfg.id}-input`);
-    const $out = document.getElementById(`${cfg.id}-output`);
-    const $err = document.getElementById(`${cfg.id}-error`);
-    const $btnConvert = document.getElementById(`${cfg.id}-convert`);
-    const $btnClear   = document.getElementById(`${cfg.id}-clear`);
-    const $btnCopy    = document.getElementById(`${cfg.id}-copy`);
-
-    const render = () => {
-      const raw = $in.value;
-      if (!raw.trim()) {
-        $out.textContent = '—';
-        $err.classList.add('hidden');
-        return;
-      }
-      const { result, error } = convertBetween(raw, cfg.fromBase, cfg.toBase);
-      if (error) {
-        $out.textContent = '—';
-        $err.textContent = error;
-        $err.classList.remove('hidden');
-      } else {
-        $out.textContent = result;
-        $err.classList.add('hidden');
-      }
-    };
-
-    $btnConvert.addEventListener('click', render);
-
-    $in.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        render();
-      }
-    });
-
-    $in.addEventListener('input', () => {
-      const raw = $in.value;
-      const { digits } = normalizeInput(raw, cfg.fromBase);
-      if (!digits) {
-        $err.classList.add('hidden');
-        $out.textContent = '—';
-        return;
-      }
-      if (!validateDigits(digits, cfg.fromBase)) {
-        $err.textContent = `Invalid ${BASE_LABEL[cfg.fromBase]} input. ${BASE_HINT[cfg.fromBase]}.`;
-        $err.classList.remove('hidden');
-      } else {
-        $err.classList.add('hidden');
-      }
-    });
-
-    $btnClear.addEventListener('click', () => {
-      $in.value = '';
-      $out.textContent = '—';
-      $err.classList.add('hidden');
-      $in.focus();
-    });
-
-    $btnCopy.addEventListener('click', async () => {
-      const text = $out.textContent.trim();
-      if (!text || text === '—') return;
-      await copyToClipboard(text);
-      const original = $btnCopy.textContent;
-      $btnCopy.textContent = 'Copied!';
-      setTimeout(() => ($btnCopy.textContent = original), 900);
-    });
-  });
-}
 
 
     // Initialize
     mountCards();
   </script>
 </body>
+
 </html>

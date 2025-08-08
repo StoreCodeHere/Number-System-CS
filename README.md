@@ -41,10 +41,6 @@ This project is deployed using **GitHub Pages** from the `main` branch.
 ---
 
 ### 🌐 Live Site
-
 [Visit the Website](https://storecodehere.github.io/Number-System-CS/)  
 Hosted via GitHub Pages from the `main` branch.
 
----
-
-Want me to add a section for future enhancements or version history too?
